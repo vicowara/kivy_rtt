@@ -11,7 +11,11 @@ from kivy.config import Config
 
 kivy.require("1.10.0")
 Config.set("graphics", "width", "120")
-Config.set("graphics", "height", "90")
+Config.set("graphics", "height", "30")
+Config.set("graphics", "borderless", "True")
+
+_interval = 1
+_destination = "192.168.1.1"
 
 
 class RootLayout(BoxLayout):
@@ -36,13 +40,14 @@ def decide_color_level(rtt):
 
 class RTTApp(App):
     def callback(self, dt):
-        cmd = ("ping 192.168.1.1 -c 1"
-               "|perl -anle 'print $1 if /bytes/ && $F[6] =~ /([0-9.]+)/'")
+        cmd = ("ping {dst} -c 1"
+               "|perl -anle 'print $1 if /bytes/ && $F[6] =~ /([0-9.]+)/'"
+               .format(dst=_destination))
         p = subprocess.Popen(cmd, shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         try:
-            stdout, stderr = p.communicate(timeout=0.5)
+            stdout, stderr = p.communicate(timeout=_interval)
         except subprocess.TimeoutExpired:
             print("timeout", file=sys.stderr)
         else:
@@ -52,7 +57,7 @@ class RTTApp(App):
 
     def build(self):
         self.layout = RootLayout()
-        Clock.schedule_interval(self.callback, 0.5)
+        Clock.schedule_interval(self.callback, _interval)
         return self.layout
 
 
