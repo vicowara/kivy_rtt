@@ -1,16 +1,13 @@
 #:kivy 1.10.0
 
-<RootLayout@GridLayout>:
-    cols: 1
-    rows: 1
-
+<RootLayout@BoxLayout>:
     Label:
         text: root.text
-        color: 1, 1, 1, 1
+        color: root.color
 
         canvas.before:
             Color:
                 rgba: 1, 1, 1, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+            Rectangle:
+                pos: self.pos
+                size: self.size
