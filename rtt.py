@@ -32,9 +32,9 @@ class RootLayout(BoxLayout):
 
 
 def decide_color_level(rtt: float) -> List[float]:
-    max_thresholds = 100
-    rtt = rtt if rtt < max_thresholds else max_thresholds
-    red = rtt / max_thresholds
+    max_threshold = 100
+    rtt = rtt if rtt < max_threshold else max_threshold
+    red = rtt / max_threshold
 
     return [red, 0, 0, 0]
 
@@ -54,7 +54,7 @@ class RTTApp(App):
             self.layout.update_label("timeout!", color=red)
         else:
             output = float(stdout.decode("utf-8"))
-            self.layout.update_label("{} ms".format(output),
+            self.layout.update_label("{rtt:.3f} ms".format(rtt=output),
                                      color=decide_color_level(output))
 
     def build(self) -> BoxLayout:
