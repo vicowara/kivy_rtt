@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-import sys
 import subprocess
-from typing import List
+from typing import Sequence
 import kivy
 from kivy.app import App
 from kivy.clock import Clock
@@ -26,12 +25,12 @@ class RootLayout(BoxLayout):
     def __init__(self, **kwargs) -> None:
         super(RootLayout, self).__init__(**kwargs)
 
-    def update_label(self, text: str, color: List[float]) -> None:
+    def update_label(self, text: str, color: Sequence[float]) -> None:
         self.text = text
         self.color = color
 
 
-def decide_color_level(rtt: float) -> List[float]:
+def decide_color_level(rtt: float) -> Sequence[float]:
     max_threshold = 100
     rtt = rtt if rtt < max_threshold else max_threshold
     red = rtt / max_threshold
