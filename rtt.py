@@ -2,6 +2,7 @@
 
 import sys
 import subprocess
+from typing import List
 import kivy
 from kivy.app import App
 from kivy.clock import Clock
@@ -22,15 +23,15 @@ class RootLayout(BoxLayout):
     text = StringProperty()
     color = ListProperty([0, 0, 0, 0])
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super(RootLayout, self).__init__(**kwargs)
 
-    def update_label(self, text, color):
+    def update_label(self, text: str, color: List[float]) -> None:
         self.text = text
         self.color = color
 
 
-def decide_color_level(rtt):
+def decide_color_level(rtt: float) -> List[float]:
     max_thresholds = 100
     rtt = rtt if rtt < max_thresholds else max_thresholds
     red = rtt / max_thresholds
@@ -39,7 +40,7 @@ def decide_color_level(rtt):
 
 
 class RTTApp(App):
-    def callback(self, dt):
+    def callback(self, dt: float) -> None:
         cmd = ("ping {dst} -c 1"
                "|perl -anle 'print $1 if /bytes/ && $F[6] =~ /([0-9.]+)/'"
                .format(dst=_destination))
@@ -55,7 +56,7 @@ class RTTApp(App):
             self.layout.update_label("{} ms".format(output),
                                      color=decide_color_level(output))
 
-    def build(self):
+    def build(self) -> BoxLayout:
         self.layout = RootLayout()
         Clock.schedule_interval(self.callback, _interval)
         return self.layout
