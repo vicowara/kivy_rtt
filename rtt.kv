@@ -1,0 +1,16 @@
+#:kivy 1.10.0
+
+<RootLayout@GridLayout>:
+    cols: 1
+    rows: 1
+
+    Label:
+        text: root.text
+        color: 1, 1, 1, 1
+
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
