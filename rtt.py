@@ -50,7 +50,8 @@ class RTTApp(App):
         try:
             stdout, stderr = p.communicate(timeout=_interval)
         except subprocess.TimeoutExpired:
-            print("timeout", file=sys.stderr)
+            red = [1, 0, 0, 0]
+            self.layout.update_label("timeout!", color=red)
         else:
             output = float(stdout.decode("utf-8"))
             self.layout.update_label("{} ms".format(output),
